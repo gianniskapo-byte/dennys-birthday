@@ -96,12 +96,15 @@
       border-bottom: 1.5px solid #EEF2FF;
     }
     .table-header h2 { font-family: 'Baloo 2', cursive; font-size: 1.2rem; color: var(--dark); }
-    #refresh-btn {
+    #refresh-btn, #sync-btn {
       padding: 7px 16px; border: 2px solid var(--blue); border-radius: 10px;
       background: transparent; color: var(--blue); font-weight: 700; font-size: 0.8rem;
       cursor: pointer; transition: all 0.15s;
     }
     #refresh-btn:hover { background: var(--blue); color: white; }
+    #sync-btn { border-color: var(--green); color: var(--green); }
+    #sync-btn:hover { background: var(--green); color: white; }
+    #sync-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
     table { width: 100%; border-collapse: collapse; }
     thead tr { background: #F5F8FF; }
@@ -194,7 +197,10 @@
     <div class="table-wrap">
       <div class="table-header">
         <h2>Guest List</h2>
-        <button id="refresh-btn" onclick="loadData()">↻ Refresh</button>
+        <div style="display:flex;gap:8px">
+          <button id="sync-btn" onclick="syncToSheet()" title="Push all RSVPs to Google Sheet">📊 Sync Sheet</button>
+          <button id="refresh-btn" onclick="loadData()">↻ Refresh</button>
+        </div>
       </div>
       <div id="table-body">
         <div class="loading">Loading RSVPs...</div>
@@ -270,6 +276,26 @@
           </tr></thead>
           <tbody>${rows}</tbody>
         </table>`;
+    }
+
+    async function syncToSheet() {
+      const btn = document.getElementById('sync-btn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Syncing...';
+      try {
+        const res  = await fetch(`/api/sync-to-sheet?token=${encodeURIComponent(adminToken)}`, { method: 'POST' });
+        const data = await res.json();
+        if (res.ok) {
+          btn.textContent = `✅ Synced ${data.syncing} entries`;
+          setTimeout(() => { btn.textContent = '📊 Sync Sheet'; btn.disabled = false; }, 3000);
+        } else {
+          btn.textContent = '⚠️ ' + (data.error || 'Failed');
+          setTimeout(() => { btn.textContent = '📊 Sync Sheet'; btn.disabled = false; }, 3000);
+        }
+      } catch {
+        btn.textContent = '⚠️ Error';
+        setTimeout(() => { btn.textContent = '📊 Sync Sheet'; btn.disabled = false; }, 3000);
+      }
     }
 
     function logout() {

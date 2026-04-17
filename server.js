@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
+const http  = require('http');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +25,33 @@ function readRSVPs() {
 
 function writeRSVPs(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
+}
+
+// ── Google Sheets via Apps Script Web App ───────────────
+const SHEET_URL = process.env.GOOGLE_SCRIPT_URL || '';
+
+function postToSheet(payload) {
+  if (!SHEET_URL) return;   // not configured yet — skip silently
+  try {
+    const body = JSON.stringify(payload);
+    const url  = new URL(SHEET_URL);
+    const lib  = url.protocol === 'https:' ? https : http;
+    const opts = {
+      hostname: url.hostname,
+      path:     url.pathname + url.search,
+      method:   'POST',
+      headers:  { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
+    };
+    const req = lib.request(opts, res => {
+      res.on('data', () => {});
+      res.on('end', () => console.log(`📊 Sheet updated (HTTP ${res.statusCode})`));
+    });
+    req.on('error', e => console.warn('⚠️  Sheet sync failed:', e.message));
+    req.write(body);
+    req.end();
+  } catch (e) {
+    console.warn('⚠️  Sheet sync error:', e.message);
+  }
 }
 
 // POST /api/rsvp
@@ -59,6 +88,7 @@ app.post('/api/rsvp', (req, res) => {
   writeRSVPs(rsvps);
 
   console.log(`New RSVP: ${entry.surname} — ${entry.guests} guests`);
+  postToSheet(entry);   // fire-and-forget to Google Sheet
   res.status(201).json({ success: true, entry });
 });
 
@@ -72,6 +102,18 @@ app.get('/api/rsvp', (req, res) => {
   const rsvps = readRSVPs();
   const totalGuests = rsvps.reduce((sum, r) => sum + r.guests, 0);
   res.json({ count: rsvps.length, totalGuests, rsvps });
+});
+
+// Bulk-sync all existing RSVPs to Google Sheet (admin only)
+app.post('/api/sync-to-sheet', (req, res) => {
+  const token = req.query.token || req.body.token;
+  const adminToken = process.env.ADMIN_TOKEN || 'pawpatrol2025';
+  if (token !== adminToken) return res.status(401).json({ error: 'Unauthorized' });
+  if (!SHEET_URL) return res.status(400).json({ error: 'GOOGLE_SCRIPT_URL not configured' });
+
+  const rsvps = readRSVPs();
+  postToSheet({ action: 'bulk', entries: rsvps });
+  res.json({ ok: true, syncing: rsvps.length });
 });
 
 // Admin panel
