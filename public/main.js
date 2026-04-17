@@ -308,6 +308,7 @@ document.getElementById('rsvp-form').addEventListener('submit', async e => {
     const data = await res.json();
 
     if (res.ok) {
+      buildCalendarLinks();
       gsap.to('#rsvp-form', { opacity: 0, scale: 0.9, duration: 0.3, onComplete() {
         document.getElementById('rsvp-form').hidden = true;
         const s = document.getElementById('form-success');
@@ -355,6 +356,53 @@ window.onYouTubeIframeAPIReady = function () {
 function updateIcon() {
   document.getElementById('icon-on').style.display  = muted ? 'none'  : 'block';
   document.getElementById('icon-off').style.display = muted ? 'block' : 'none';
+}
+
+/* ════════════════════════════════════════════════════════
+   ADD TO CALENDAR
+   ════════════════════════════════════════════════════════ */
+const CAL_TITLE    = "Dennys 4th Birthday Party 🐾";
+const CAL_LOCATION = "Παναγίτσας 10, Γλυκά Νερά";
+const CAL_DESC     = "PAW Patrol Birthday Party! No job is too big, no pup is too small!";
+const CAL_START    = "20260516T110000";  // 2026-05-16 11:00
+const CAL_END      = "20260516T140000";  // 2026-05-16 14:00 (3 hrs)
+
+function buildCalendarLinks() {
+  // Google Calendar
+  const gc = `https://calendar.google.com/calendar/r/eventedit?` + new URLSearchParams({
+    text:     CAL_TITLE,
+    dates:    `${CAL_START}/${CAL_END}`,
+    location: CAL_LOCATION,
+    details:  CAL_DESC
+  }).toString();
+  document.getElementById('gcal-link').href = gc;
+
+  // ICS download button
+  document.getElementById('ics-btn').addEventListener('click', downloadICS);
+}
+
+function downloadICS() {
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//DennysBirthday//EN',
+    'BEGIN:VEVENT',
+    `DTSTART:${CAL_START}`,
+    `DTEND:${CAL_END}`,
+    `SUMMARY:${CAL_TITLE}`,
+    `LOCATION:${CAL_LOCATION}`,
+    `DESCRIPTION:${CAL_DESC}`,
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = Object.assign(document.createElement('a'), { href: url, download: 'dennys-birthday.ics' });
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 document.getElementById('music-btn').addEventListener('click', () => {

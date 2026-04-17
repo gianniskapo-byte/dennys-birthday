@@ -434,6 +434,21 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 .form-success h3 { font-family: var(--font-display); font-size: 1.6rem; color: var(--green); margin: 8px 0; }
 .form-success p { font-size: 0.9rem; color: #444; font-weight: 600; line-height: 1.6; }
 
+/* Calendar buttons */
+.cal-btns { margin-top: 18px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.cal-label { font-size: 0.8rem; color: #777; font-weight: 600; margin: 0; }
+.cal-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 20px; border-radius: 10px;
+  font-family: var(--font-body); font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; text-decoration: none; border: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  width: 100%; justify-content: center;
+}
+.cal-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+.cal-btn.gcal  { background: #4285F4; color: white; }
+.cal-btn.ical  { background: #555; color: white; }
+
 /* ─── MUSIC BUTTON ───────────────────────────────────── */
 #music-btn {
   position: fixed; bottom: 18px; right: 18px;
@@ -449,17 +464,55 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 #music-btn:hover { transform: scale(1.12); }
 
 /* ─── RESPONSIVE ─────────────────────────────────────── */
-@media (max-width: 600px) {
-  .char-wrap:nth-child(n+6) .char-svg { width: clamp(56px, 9vw, 76px); }
-  .info-row { font-size: 0.68rem; }
-  .idot { display: none; }
-  .iitem { display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+/* Tablet */
+@media (max-width: 768px) {
+  .info-row { font-size: 0.72rem; gap: 4px 8px; }
 }
+
+/* Mobile — 480px and below */
+@media (max-width: 480px) {
+  /* Characters: all 7 must fit in ~375px */
+  .char-svg  { width: 46px; }
+  .char-name { font-size: 0.45rem; }
+  #chars-strip { gap: 3px; padding: 0 3px 5px; }
+
+  /* Music button: lift it above character strip */
+  #music-btn { bottom: 76px; right: 14px; width: 42px; height: 42px; }
+
+  /* Shield slightly smaller */
+  #shield { margin-top: 6px; }
+  .shield-svg { width: 78px; }
+
+  /* Title */
+  #name-text { font-size: clamp(2.6rem, 12vw, 4.5rem); letter-spacing: 2px; }
+
+  /* Info row: stack vertically, hide dots */
+  .info-row { flex-direction: column; gap: 2px; font-size: 0.72rem; }
+  .idot { display: none; }
+
+  /* Glass panel tighter */
+  #glass-panel { padding: 10px 10px; gap: 8px; border-radius: 16px; }
+
+  /* Countdown boxes smaller */
+  .cd-unit { min-width: 42px; padding: 5px 5px 4px; border-radius: 10px; }
+  .cd-num  { font-size: clamp(1.1rem, 5.5vw, 1.7rem); }
+  .cd-sep  { font-size: clamp(1.1rem, 4vw, 1.5rem); }
+  .cd-unit small { font-size: 0.45rem; }
+
+  /* RSVP button */
+  .btn-rsvp { padding: 12px 20px; min-width: 180px; }
+}
+
+/* Very short phones (e.g. iPhone SE landscape-ish) */
 @media (max-height: 680px) {
-  #invite { gap: 3px; }
-  .shield-svg { width: 68px; }
-  #name-text  { font-size: clamp(2.5rem, 9vw, 4.5rem); }
-  .tagline    { font-size: 0.9rem; }
-  .char-svg   { width: clamp(55px, 8vw, 80px); }
-  #glass-panel { padding: 8px 14px; gap: 6px; }
+  #invite { gap: 2px; }
+  .shield-svg { width: 65px; }
+  #shield { margin-top: 4px; }
+  #name-text  { font-size: clamp(2.2rem, 9vw, 4rem); }
+  .tagline    { font-size: 0.82rem; }
+  .char-svg   { width: 42px; }
+  #glass-panel { padding: 7px 12px; gap: 5px; }
+  .cd-unit { padding: 4px 4px 3px; min-width: 38px; }
+  .cd-num  { font-size: 1.1rem; }
 }

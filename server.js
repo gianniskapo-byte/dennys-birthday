@@ -74,6 +74,11 @@ app.get('/api/rsvp', (req, res) => {
   res.json({ count: rsvps.length, totalGuests, rsvps });
 });
 
+// Admin panel
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
 // SPA fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

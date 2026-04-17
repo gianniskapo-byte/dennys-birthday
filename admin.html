@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Dennys' Party RSVPs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #0057B8; --red: #E31E24; --dark: #001A60;
+      --green: #2D9B27; --bg: #F0F4FF;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      min-height: 100dvh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 24px 16px 48px;
+    }
+
+    /* ── HEADER ── */
+    .admin-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 28px; width: 100%; max-width: 860px;
+    }
+    .admin-header svg { flex-shrink: 0; }
+    .admin-header h1 {
+      font-family: 'Baloo 2', cursive; font-size: 1.8rem; font-weight: 900;
+      color: var(--dark); line-height: 1.1;
+    }
+    .admin-header p { font-size: 0.82rem; color: #666; font-weight: 600; }
+
+    /* ── LOGIN CARD ── */
+    #login-card {
+      background: white; border-radius: 24px;
+      padding: 36px 32px; width: 100%; max-width: 400px;
+      box-shadow: 0 8px 40px rgba(0,26,96,0.13);
+    }
+    #login-card h2 {
+      font-family: 'Baloo 2', cursive; font-size: 1.5rem; color: var(--dark);
+      margin-bottom: 6px;
+    }
+    #login-card p { font-size: 0.83rem; color: #888; margin-bottom: 24px; font-weight: 600; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-weight: 700; font-size: 0.84rem; color: var(--dark); margin-bottom: 6px; }
+    .field input {
+      width: 100%; padding: 11px 14px;
+      border: 2px solid #D0E0F5; border-radius: 11px;
+      font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600;
+      color: #222; outline: none; transition: border-color 0.2s;
+    }
+    .field input:focus { border-color: var(--blue); }
+    #login-btn {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, var(--blue), #003A8C);
+      color: white; border: none; border-radius: 12px;
+      font-family: 'Baloo 2', cursive; font-size: 1.1rem; font-weight: 900;
+      cursor: pointer; margin-top: 4px;
+      box-shadow: 0 5px 18px rgba(0,87,184,0.35);
+      transition: transform 0.12s;
+    }
+    #login-btn:hover { transform: translateY(-2px); }
+    #login-err {
+      margin-top: 12px; padding: 10px 14px;
+      background: #FFF0F0; border: 1.5px solid var(--red);
+      border-radius: 9px; color: var(--red); font-weight: 700;
+      font-size: 0.84rem; display: none;
+    }
+
+    /* ── DASHBOARD ── */
+    #dashboard { width: 100%; max-width: 860px; display: none; }
+
+    /* Stats row */
+    .stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+    .stat-card {
+      flex: 1; min-width: 140px;
+      background: white; border-radius: 18px; padding: 20px 22px;
+      box-shadow: 0 4px 20px rgba(0,26,96,0.08);
+    }
+    .stat-card .stat-num {
+      font-family: 'Baloo 2', cursive; font-size: 2.4rem; font-weight: 900;
+      color: var(--blue); line-height: 1;
+    }
+    .stat-card .stat-label { font-size: 0.75rem; font-weight: 700; color: #888; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Table */
+    .table-wrap {
+      background: white; border-radius: 18px;
+      box-shadow: 0 4px 20px rgba(0,26,96,0.08); overflow: hidden;
+    }
+    .table-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px 14px;
+      border-bottom: 1.5px solid #EEF2FF;
+    }
+    .table-header h2 { font-family: 'Baloo 2', cursive; font-size: 1.2rem; color: var(--dark); }
+    #refresh-btn {
+      padding: 7px 16px; border: 2px solid var(--blue); border-radius: 10px;
+      background: transparent; color: var(--blue); font-weight: 700; font-size: 0.8rem;
+      cursor: pointer; transition: all 0.15s;
+    }
+    #refresh-btn:hover { background: var(--blue); color: white; }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: #F5F8FF; }
+    th {
+      padding: 12px 18px; text-align: left;
+      font-size: 0.72rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.5px; color: #888;
+    }
+    td {
+      padding: 13px 18px; font-size: 0.88rem; font-weight: 600; color: #333;
+      border-top: 1px solid #F0F4FF;
+    }
+    tr:hover td { background: #FAFBFF; }
+    .badge {
+      display: inline-block; padding: 3px 10px;
+      border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+      background: #E8F0FF; color: var(--blue);
+    }
+    .time-cell { font-size: 0.76rem; color: #999; }
+
+    /* Empty state */
+    .empty {
+      text-align: center; padding: 48px 24px; color: #aaa;
+      font-size: 0.9rem; font-weight: 600;
+    }
+    .empty div { font-size: 2.5rem; margin-bottom: 10px; }
+
+    /* Logout */
+    #logout-btn {
+      margin-top: 20px;
+      padding: 8px 20px; border: 2px solid #ccc; border-radius: 10px;
+      background: transparent; color: #888; font-weight: 700; font-size: 0.8rem;
+      cursor: pointer; transition: all 0.15s;
+    }
+    #logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* Loading */
+    .loading { text-align: center; padding: 36px; color: #aaa; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="admin-header">
+    <svg width="48" height="58" viewBox="0 0 48 58" fill="none">
+      <path d="M24 2L44 12V30C44 42 24 56 24 56C24 56 4 42 4 30V12L24 2Z" fill="#E31E24" stroke="#8B0000" stroke-width="2"/>
+      <path d="M24 6L41 15V30C41 41 24 53 24 53C24 53 7 41 7 30V15L24 6Z" fill="#C0001C"/>
+      <ellipse cx="24" cy="34" rx="9" ry="7" fill="#0057B8"/>
+      <circle cx="18" cy="26" r="3.5" fill="#0057B8"/>
+      <circle cx="30" cy="26" r="3.5" fill="#0057B8"/>
+      <circle cx="24" cy="23" r="3" fill="#0057B8"/>
+    </svg>
+    <div>
+      <h1>🎂 Admin Panel</h1>
+      <p>Dennys' PAW Patrol Birthday Party — RSVPs</p>
+    </div>
+  </div>
+
+  <!-- Login -->
+  <div id="login-card">
+    <h2>Welcome, Admin 👋</h2>
+    <p>Enter your admin password to view RSVPs.</p>
+    <form id="login-form" onsubmit="doLogin(event)">
+      <div class="field">
+        <label>Admin Password</label>
+        <input type="password" id="pwd-input" placeholder="Enter password..." autocomplete="current-password" required>
+      </div>
+      <button type="submit" id="login-btn">Enter Admin Panel 🐾</button>
+      <div id="login-err">Incorrect password. Try again.</div>
+    </form>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard">
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-families">—</div>
+        <div class="stat-label">Families Confirmed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-guests">—</div>
+        <div class="stat-label">Total Guests</div>
+      </div>
+      <div class="stat-card" style="background:linear-gradient(135deg,#0057B8,#003A8C)">
+        <div class="stat-num" style="color:white">16/5</div>
+        <div class="stat-label" style="color:rgba(255,255,255,0.75)">Party Date</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-header">
+        <h2>Guest List</h2>
+        <button id="refresh-btn" onclick="loadData()">↻ Refresh</button>
+      </div>
+      <div id="table-body">
+        <div class="loading">Loading RSVPs...</div>
+      </div>
+    </div>
+
+    <button id="logout-btn" onclick="logout()">Log out</button>
+  </div>
+
+  <script>
+    let adminToken = sessionStorage.getItem('admin_token') || '';
+
+    // Auto-login if token saved in session
+    if (adminToken) { showDashboard(); loadData(); }
+
+    async function doLogin(e) {
+      e.preventDefault();
+      const pwd = document.getElementById('pwd-input').value.trim();
+      const err = document.getElementById('login-err');
+      err.style.display = 'none';
+
+      const res = await fetch(`/api/rsvp?token=${encodeURIComponent(pwd)}`);
+      if (res.ok) {
+        adminToken = pwd;
+        sessionStorage.setItem('admin_token', pwd);
+        showDashboard();
+        renderData(await res.json());
+      } else {
+        err.style.display = 'block';
+        document.getElementById('pwd-input').select();
+      }
+    }
+
+    function showDashboard() {
+      document.getElementById('login-card').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+    }
+
+    async function loadData() {
+      document.getElementById('table-body').innerHTML = '<div class="loading">Loading...</div>';
+      const res = await fetch(`/api/rsvp?token=${encodeURIComponent(adminToken)}`);
+      if (!res.ok) { logout(); return; }
+      renderData(await res.json());
+    }
+
+    function renderData(data) {
+      document.getElementById('stat-families').textContent = data.count;
+      document.getElementById('stat-guests').textContent   = data.totalGuests;
+
+      if (!data.rsvps.length) {
+        document.getElementById('table-body').innerHTML =
+          '<div class="empty"><div>🐾</div>No RSVPs yet — share the invitation!</div>';
+        return;
+      }
+
+      const rows = data.rsvps.map((r, i) => {
+        const dt = new Date(r.submittedAt);
+        const dateStr = dt.toLocaleDateString('el-GR', { day:'2-digit', month:'2-digit', year:'2-digit' });
+        const timeStr = dt.toLocaleTimeString('el-GR', { hour:'2-digit', minute:'2-digit' });
+        return `<tr>
+          <td>${i + 1}</td>
+          <td><strong>${escHtml(r.surname)}</strong></td>
+          <td><span class="badge">${r.guests} ${r.guests === 1 ? 'person' : 'people'}</span></td>
+          <td>${r.message ? escHtml(r.message) : '<span style="color:#ccc">—</span>'}</td>
+          <td class="time-cell">${dateStr} ${timeStr}</td>
+        </tr>`;
+      }).join('');
+
+      document.getElementById('table-body').innerHTML = `
+        <table>
+          <thead><tr>
+            <th>#</th><th>Family</th><th>Guests</th><th>Message</th><th>Submitted</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    }
+
+    function logout() {
+      sessionStorage.removeItem('admin_token');
+      adminToken = '';
+      document.getElementById('login-card').style.display = 'block';
+      document.getElementById('dashboard').style.display  = 'none';
+      document.getElementById('pwd-input').value = '';
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+  </script>
+</body>
+</html>
