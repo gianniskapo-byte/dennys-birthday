@@ -1,0 +1,4 @@
+node_modules/
+data/rsvp.json
+.DS_Store
+.env

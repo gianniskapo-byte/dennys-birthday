@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dennys is Turning 4! 🐾</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- Siren intro -->
+  <div id="siren"></div>
+
+  <!-- Stars -->
+  <div id="stars" aria-hidden="true"></div>
+
+  <!-- Clouds -->
+  <div class="clouds" aria-hidden="true">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+    <div class="cloud c4"></div>
+  </div>
+
+  <!-- Particles -->
+  <canvas id="paw-canvas"></canvas>
+  <canvas id="confetti-canvas"></canvas>
+  <div id="sparkles"></div>
+
+  <!-- ══════════ MAIN CONTENT ══════════ -->
+  <div id="invite">
+
+    <!-- Bunting -->
+    <div class="bunting" aria-hidden="true">
+      <span class="flag" style="--c:#E31E24"></span><span class="flag" style="--c:#F5D03B"></span>
+      <span class="flag" style="--c:#0057B8"></span><span class="flag" style="--c:#2D9B27"></span>
+      <span class="flag" style="--c:#E91E8C"></span><span class="flag" style="--c:#F97316"></span>
+      <span class="flag" style="--c:#E31E24"></span><span class="flag" style="--c:#F5D03B"></span>
+      <span class="flag" style="--c:#0057B8"></span><span class="flag" style="--c:#2D9B27"></span>
+      <span class="flag" style="--c:#E91E8C"></span><span class="flag" style="--c:#F97316"></span>
+    </div>
+
+    <!-- Shield -->
+    <div id="shield">
+      <svg viewBox="0 0 120 140" class="shield-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="sg" cx="50%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#FF5555"/>
+            <stop offset="100%" stop-color="#A01018"/>
+          </radialGradient>
+          <radialGradient id="cg" cx="30%" cy="20%" r="80%">
+            <stop offset="0%" stop-color="#FFF"/>
+            <stop offset="40%" stop-color="#D8D8D8"/>
+            <stop offset="100%" stop-color="#999"/>
+          </radialGradient>
+          <filter id="glow-f"><feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#FFD700" flood-opacity="1"/></filter>
+          <filter id="drop-f"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(0,0,0,0.6)"/></filter>
+        </defs>
+        <path d="M60,3 Q110,3 116,28 L116,82 Q116,120 60,138 Q4,120 4,82 L4,28 Q10,3 60,3 Z" fill="url(#cg)" filter="url(#drop-f)"/>
+        <path d="M60,11 Q102,11 108,33 L108,82 Q108,114 60,130 Q12,114 12,82 L12,33 Q18,11 60,11 Z" fill="url(#sg)" filter="url(#glow-f)"/>
+        <ellipse cx="60" cy="83" rx="17" ry="15" fill="#0057B8"/>
+        <ellipse cx="42" cy="64" rx="8.5" ry="9.5" fill="#0057B8"/>
+        <ellipse cx="56" cy="57" rx="8.5" ry="9.5" fill="#0057B8"/>
+        <ellipse cx="71" cy="57" rx="8.5" ry="9.5" fill="#0057B8"/>
+        <ellipse cx="85" cy="64" rx="8.5" ry="9.5" fill="#0057B8"/>
+        <ellipse cx="44" cy="34" rx="11" ry="7" fill="rgba(255,255,255,0.25)" transform="rotate(-30,44,34)"/>
+      </svg>
+    </div>
+
+    <p class="tagline" id="tagline">✨ Calling all Pups! ✨</p>
+
+    <div class="title-block">
+      <h1 id="name-text">DENNYS</h1>
+      <p id="sub-text">is Turning <span id="big-four">4!</span></p>
+    </div>
+
+    <!-- Glass info panel -->
+    <div id="glass-panel">
+      <div class="info-row">
+        <span class="iitem">📅 <b>Saturday, May 16, 2026</b></span>
+        <span class="idot">·</span>
+        <span class="iitem">⏰ <b>11:00 AM</b></span>
+        <span class="idot">·</span>
+        <span class="iitem">📍 <b>Panagiitsas 10, Glyka Nera</b></span>
+      </div>
+      <div class="countdown-row" id="countdown-row">
+        <div class="cd-unit"><span class="cd-num" id="cd-days">00</span><small>Days</small></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-hours">00</span><small>Hours</small></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-minutes">00</span><small>Mins</small></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-seconds">00</span><small>Secs</small></div>
+      </div>
+      <div class="cta-row">
+        <button id="rsvp-open-btn" class="btn-rsvp">We'll Be There! 🐾</button>
+        <a href="tel:6980741432" class="phone-link">📞 6980 741 432</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════ PAW PATROL CHARACTERS (SVG illustrated) ══════════ -->
+  <div id="chars-strip">
+
+    <!-- CHASE — German Shepherd, Police -->
+    <div class="char-wrap" data-char="chase">
+      <svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" class="char-svg">
+        <!-- Body / uniform -->
+        <ellipse cx="50" cy="118" rx="34" ry="18" fill="#0057B8"/>
+        <ellipse cx="50" cy="105" rx="22" ry="16" fill="#1466CC"/>
+        <!-- Star badge -->
+        <circle cx="50" cy="104" r="7" fill="#F5D03B"/>
+        <text x="50" y="108" font-size="8" text-anchor="middle" fill="#8B7000">★</text>
+        <!-- Head -->
+        <ellipse cx="50" cy="60" rx="28" ry="26" fill="#C4892A"/>
+        <!-- Dark saddle/markings on top head -->
+        <ellipse cx="50" cy="47" rx="18" ry="11" fill="#7A4800" opacity="0.55"/>
+        <!-- Snout -->
+        <ellipse cx="50" cy="74" rx="14" ry="10" fill="#E8B864"/>
+        <!-- Eyes -->
+        <circle cx="37" cy="58" r="7.5" fill="white"/>
+        <circle cx="63" cy="58" r="7.5" fill="white"/>
+        <circle cx="38.5" cy="59" r="5" fill="#2D1500"/>
+        <circle cx="64.5" cy="59" r="5" fill="#2D1500"/>
+        <circle cx="40" cy="57.5" r="1.8" fill="white"/>
+        <circle cx="66" cy="57.5" r="1.8" fill="white"/>
+        <!-- Nose -->
+        <ellipse cx="50" cy="72" rx="5.5" ry="3.8" fill="#2D1500"/>
+        <!-- Mouth -->
+        <path d="M43,78 Q50,85 57,78" stroke="#2D1500" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <ellipse cx="50" cy="83" rx="5" ry="3.5" fill="#E07070"/>
+        <!-- Ears — upright pointed (GSD) -->
+        <path d="M24,46 L16,10 L38,38 Z" fill="#C4892A"/>
+        <path d="M27,44 L21,14 L36,40 Z" fill="#D4A040" opacity="0.7"/>
+        <path d="M76,46 L84,10 L62,38 Z" fill="#C4892A"/>
+        <path d="M73,44 L79,14 L64,40 Z" fill="#D4A040" opacity="0.7"/>
+        <!-- Police cap -->
+        <rect x="26" y="30" width="48" height="12" rx="5" fill="#0057B8"/>
+        <ellipse cx="50" cy="30" rx="24" ry="7" fill="#0042A0"/>
+        <rect x="28" y="22" width="44" height="12" rx="5" fill="#0057B8"/>
+        <ellipse cx="50" cy="22" rx="20" ry="5.5" fill="#003080"/>
+        <text x="50" y="28" font-size="7" text-anchor="middle" fill="#F5D03B">★</text>
+      </svg>
+      <span class="char-name">Chase</span>
+    </div>
+
+    <!-- MARSHALL — Dalmatian, Firefighter -->
+    <div class="char-wrap" data-char="marshall">
+      <svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" class="char-svg">
+        <ellipse cx="50" cy="118" rx="34" ry="18" fill="#E31E24"/>
+        <ellipse cx="50" cy="105" rx="22" ry="16" fill="#FF3333"/>
+        <circle cx="50" cy="104" r="7" fill="white"/>
+        <text x="50" y="108" font-size="9" text-anchor="middle" fill="#E31E24" font-weight="bold">+</text>
+        <!-- Head white -->
+        <ellipse cx="50" cy="60" rx="28" ry="26" fill="#F5F0E0"/>
+        <!-- Dalmatian spots -->
+        <ellipse cx="34" cy="52" rx="5" ry="4" fill="#222" opacity="0.8" transform="rotate(-15,34,52)"/>
+        <ellipse cx="65" cy="50" rx="4" ry="3" fill="#222" opacity="0.8" transform="rotate(20,65,50)"/>
+        <ellipse cx="42" cy="70" rx="3.5" ry="2.5" fill="#222" opacity="0.7"/>
+        <ellipse cx="62" cy="68" rx="4" ry="3" fill="#222" opacity="0.7" transform="rotate(10,62,68)"/>
+        <!-- Snout -->
+        <ellipse cx="50" cy="74" rx="14" ry="10" fill="#EEE8D5"/>
+        <!-- Eyes -->
+        <circle cx="37" cy="58" r="7.5" fill="white"/>
+        <circle cx="63" cy="58" r="7.5" fill="white"/>
+        <circle cx="38.5" cy="59" r="5" fill="#2D1500"/>
+        <circle cx="64.5" cy="59" r="5" fill="#2D1500"/>
+        <circle cx="40" cy="57.5" r="1.8" fill="white"/>
+        <circle cx="66" cy="57.5" r="1.8" fill="white"/>
+        <ellipse cx="50" cy="72" rx="5.5" ry="3.8" fill="#2D1500"/>
+        <path d="M43,78 Q50,85 57,78" stroke="#2D1500" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <ellipse cx="50" cy="83" rx="5" ry="3.5" fill="#E07070"/>
+        <!-- Floppy ears (Dalmatian) -->
+        <ellipse cx="23" cy="58" rx="9" ry="16" fill="#F5F0E0" transform="rotate(-10,23,58)"/>
+        <ellipse cx="23" cy="60" rx="6" ry="11" fill="#EEE8D5" transform="rotate(-10,23,60)"/>
+        <ellipse cx="77" cy="58" rx="9" ry="16" fill="#F5F0E0" transform="rotate(10,77,58)"/>
+        <ellipse cx="77" cy="60" rx="6" ry="11" fill="#EEE8D5" transform="rotate(10,77,60)"/>
+        <!-- Spots on ears -->
+        <ellipse cx="22" cy="55" rx="3.5" ry="4.5" fill="#222" opacity="0.5" transform="rotate(-10,22,55)"/>
+        <ellipse cx="77" cy="55" rx="3.5" ry="4.5" fill="#222" opacity="0.5" transform="rotate(10,77,55)"/>
+        <!-- Fire hat -->
+        <path d="M26,38 Q50,28 74,38 L70,48 L30,48 Z" fill="#E31E24"/>
+        <rect x="26" y="44" width="48" height="8" rx="4" fill="#CC0010"/>
+        <circle cx="50" cy="32" r="5" fill="#E31E24"/>
+        <rect x="46" y="18" width="8" height="18" rx="3" fill="#CC0010"/>
+        <ellipse cx="50" cy="18" rx="8" ry="3" fill="#AA0008"/>
+      </svg>
+      <span class="char-name">Marshall</span>
+    </div>
+
+    <!-- RUBBLE — Bulldog, Construction -->
+    <div class="char-wrap" data-char="rubble">
+      <svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" class="char-svg">
+        <ellipse cx="50" cy="118" rx="34" ry="18" fill="#F5A623"/>
+        <ellipse cx="50" cy="105" rx="22" ry="16" fill="#F5C060"/>
+        <rect x="40" y="97" width="20" height="16" rx="4" fill="#E89010"/>
+        <rect x="37" y="100" width="26" height="4" rx="2" fill="#D07800"/>
+        <!-- Bulldog head (rounder, wider) -->
+        <ellipse cx="50" cy="60" rx="30" ry="27" fill="#C4782A"/>
+        <!-- Jowls -->
+        <ellipse cx="36" cy="76" rx="11" ry="8" fill="#D4882A"/>
+        <ellipse cx="64" cy="76" rx="11" ry="8" fill="#D4882A"/>
+        <!-- Snout flat bulldog -->
+        <ellipse cx="50" cy="73" rx="16" ry="9" fill="#E89A50"/>
+        <!-- Eyes -->
+        <circle cx="37" cy="58" r="8" fill="white"/>
+        <circle cx="63" cy="58" r="8" fill="white"/>
+        <circle cx="38.5" cy="59" r="5.5" fill="#2D1500"/>
+        <circle cx="64.5" cy="59" r="5.5" fill="#2D1500"/>
+        <circle cx="40" cy="57.5" r="2" fill="white"/>
+        <circle cx="66" cy="57.5" r="2" fill="white"/>
+        <!-- Bulldog nose (pushed up) -->
+        <ellipse cx="50" cy="70" rx="7" ry="4" fill="#2D1500"/>
+        <ellipse cx="47" cy="69" rx="2.5" ry="1.5" fill="#555"/>
+        <ellipse cx="53" cy="69" rx="2.5" ry="1.5" fill="#555"/>
+        <!-- Underbite teeth -->
+        <rect x="44" y="77" width="5" height="5" rx="1" fill="white"/>
+        <rect x="51" y="77" width="5" height="5" rx="1" fill="white"/>
+        <!-- Small rounded ears (bulldog) -->
+        <ellipse cx="22" cy="45" rx="9" ry="11" fill="#A8621A"/>
+        <ellipse cx="78" cy="45" rx="9" ry="11" fill="#A8621A"/>
+        <!-- Hard hat YELLOW -->
+        <ellipse cx="50" cy="36" rx="28" ry="10" fill="#F5D03B"/>
+        <rect x="24" y="28" width="52" height="14" rx="6" fill="#F5D03B"/>
+        <ellipse cx="50" cy="28" rx="24" ry="7" fill="#E0B820"/>
+      </svg>
+      <span class="char-name">Rubble</span>
+    </div>
+
+    <!-- ROCKY — Schnauzer, Eco -->
+    <div class="char-wrap" data-char="rocky">
+      <svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" class="char-svg">
+        <ellipse cx="50" cy="118" rx="34" ry="18" fill="#2D9B27"/>
+        <ellipse cx="50" cy="105" rx="22" ry="16" fill="#3DB838"/>
+        <!-- Recycling symbol -->
+        <text x="50" y="110" font-size="14" text-anchor="middle" fill="white">♻</text>
+        <!-- Head grey-green -->
+        <ellipse cx="50" cy="60" rx="28" ry="26" fill="#8FA88A"/>
+        <!-- Darker markings -->
+        <ellipse cx="50" cy="48" rx="16" ry="10" fill="#607060" opacity="0.6"/>
+        <!-- Schnauzer beard/muzzle -->
+        <ellipse cx="50" cy="75" rx="15" ry="12" fill="#CCDDCC"/>
+        <!-- Bushy eyebrow tufts -->
+        <ellipse cx="36" cy="53" rx="8" ry="5" fill="#607060" transform="rotate(-10,36,53)"/>
+        <ellipse cx="64" cy="53" rx="8" ry="5" fill="#607060" transform="rotate(10,64,53)"/>
+        <!-- Eyes -->
+        <circle cx="37" cy="59" r="7" fill="white"/>
+        <circle cx="63" cy="59" r="7" fill="white"/>
+        <circle cx="38.5" cy="60" r="4.5" fill="#1A3A00"/>
+        <circle cx="64.5" cy="60" r="4.5" fill="#1A3A00"/>
+        <circle cx="40" cy="58.5" r="1.6" fill="white"/>
+        <circle cx="66" cy="58.5" r="1.6" fill="white"/>
+        <ellipse cx="50" cy="73" rx="5" ry="3.5" fill="#2D1500"/>
+        <path d="M43,79 Q50,86 57,79" stroke="#2D1500" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- Floppy folded ears (schnauzer) -->
+        <ellipse cx="23" cy="52" rx="8" ry="13" fill="#8FA88A" transform="rotate(10,23,52)"/>
+        <ellipse cx="77" cy="52" rx="8" ry="13" fill="#8FA88A" transform="rotate(-10,77,52)"/>
+        <!-- Green cap -->
+        <ellipse cx="50" cy="36" rx="26" ry="8" fill="#2D9B27"/>
+        <rect x="26" y="28" width="48" height="12" rx="5" fill="#2D9B27"/>
+        <ellipse cx="50" cy="28" rx="20" ry="5" fill="#1A7018"/>
+        <text x="50" y="32" font-size="7" text-anchor="middle" fill="white">♻</text>
+      </svg>
+      <span class="char-name">Rocky</span>
+    </div>
+
+    <!-- SKYE — Cockapoo, Aviation -->
+    <div class="char-wrap" data-char="skye">
+      <svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" class="char-svg">
+        <ellipse cx="50" cy="118" rx="34" ry="18" fill="#E91E8C"/>
+        <ellipse cx="50" cy="105" rx="22" ry="16" fill="#FF4CAF"/>
+        <circle cx="50" cy="104" r="7" fill="white"/>
+        <text x="50" y="108" font-size="8" text-anchor="middle" fill="#E91E8C">✈</text>
+        <!-- Head (cream cockapoo) -->
+        <ellipse cx="50" cy="62" rx="27" ry="25" fill="#F5D4A0"/>
+        <!-- Fluffy head top -->
+        <ellipse cx="50" cy="44" rx="22" ry="12" fill="#F0C880"/>
+        <ellipse cx="38" cy="42" rx="10" ry="7" fill="#F0C880"/>
+        <ellipse cx="62" cy="42" rx="10" ry="7" fill="#F0C880"/>
+        <!-- Snout -->
+        <ellipse cx="50" cy="74" rx="13" ry="9" fill="#F0C070"/>
+        <!-- Eyes -->
+        <circle cx="38" cy="60" r="7.5" fill="white"/>
+        <circle cx="62" cy="60" r="7.5" fill="white"/>
+        <circle cx="39.5" cy="61" r="5" fill="#2D1500"/>
+        <circle cx="63.5" cy="61" r="5" fill="#2D1500"/>
+        <circle cx="41" cy="59.5" r="1.8" fill="white"/>
+        <circle cx="65" cy="59.5" r="1.8" fill="white"/>
+        <!-- Heart/rosy cheeks -->
+        <ellipse cx="30" cy="68" rx="6" ry="4" fill="#FFB0C0" opacity="0.6"/>
+        <ellipse cx="70" cy="68" rx="6" ry="4" fill="#FFB0C0" opacity="0.6"/>
+        <ellipse cx="50" cy="72" rx="5.5" ry="3.5" fill="#2D1500"/>
+        <path d="M43,78 Q50,85 57,78" stroke="#2D1500" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <ellipse cx="50" cy="82" rx="5" ry="3.5" fill="#E07070"/>
+        <!-- Floppy curly ears (cockapoo) -->
+        <ellipse cx="23" cy="60" rx="8" ry="15" fill="#F0C880" transform="rotate(5,23,60)"/>
+        <ellipse cx="77" cy="60" rx="8" ry="15" fill="#F0C880" transform="rotate(-5,77,60)"/>
+        <!-- Pink pilot helmet -->
+        <ellipse cx="50" cy="38" rx="25" ry="14" fill="#E91E8C"/>
+        <rect x="27" y="30" width="46" height="12" rx="5" fill="#E91E8C"/>
+        <ellipse cx="50" cy="30" rx="21" ry="6" fill="#C0006C"/>
+        <!-- Propeller -->
+        <circle cx="50" cy="22" r="4" fill="#C0006C"/>
+        <ellipse cx="50" cy="18" rx="14" ry="4" fill="#F5D03B" transform="rotate(-20,50,18)"/>
+        <ellipse cx="50" cy="18" rx="14" ry="4" fill="#F5D03B" transform="rotate(70,50,18)"/>
+        <!-- Visor -->
+        <ellipse cx="50" cy="44" rx="16" ry="5" fill="rgba(100,200,255,0.4)"/>
+      </svg>
+      <span class="char-name">Skye</span>
+    </div>
+
+    <!-- ZUMA — Chocolate Lab, Water Rescue -->
+    <div class="char-wrap" data-char="zuma">
+      <svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" class="char-svg">
+        <ellipse cx="50" cy="118" rx="34" ry="18" fill="#F97316"/>
+        <ellipse cx="50" cy="105" rx="22" ry="16" fill="#FF8C30"/>
+        <text x="50" y="110" font-size="16" text-anchor="middle">⚓</text>
+        <!-- Head chocolate lab -->
+        <ellipse cx="50" cy="60" rx="28" ry="26" fill="#8B4513"/>
+        <!-- Snout -->
+        <ellipse cx="50" cy="74" rx="15" ry="10" fill="#A05520"/>
+        <!-- Eyes -->
+        <circle cx="37" cy="58" r="7.5" fill="white"/>
+        <circle cx="63" cy="58" r="7.5" fill="white"/>
+        <circle cx="38.5" cy="59" r="5" fill="#1A0800"/>
+        <circle cx="64.5" cy="59" r="5" fill="#1A0800"/>
+        <circle cx="40" cy="57.5" r="1.8" fill="white"/>
+        <circle cx="66" cy="57.5" r="1.8" fill="white"/>
+        <ellipse cx="50" cy="72" rx="6" ry="4" fill="#1A0800"/>
+        <path d="M43,78 Q50,86 57,78" stroke="#1A0800" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <ellipse cx="50" cy="83" rx="5.5" ry="4" fill="#E07070"/>
+        <!-- Floppy lab ears -->
+        <ellipse cx="23" cy="58" rx="8.5" ry="15" fill="#7A3A0D" transform="rotate(5,23,58)"/>
+        <ellipse cx="77" cy="58" rx="8.5" ry="15" fill="#7A3A0D" transform="rotate(-5,77,58)"/>
+        <!-- Orange rescue helmet -->
+        <ellipse cx="50" cy="36" rx="26" ry="9" fill="#F97316"/>
+        <rect x="26" y="28" width="48" height="12" rx="5" fill="#F97316"/>
+        <ellipse cx="50" cy="28" rx="22" ry="6" fill="#E05000"/>
+        <ellipse cx="50" cy="26" rx="16" ry="4" fill="#C03800"/>
+      </svg>
+      <span class="char-name">Zuma</span>
+    </div>
+
+    <!-- EVEREST — Husky, Snow Rescue -->
+    <div class="char-wrap" data-char="everest">
+      <svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" class="char-svg">
+        <ellipse cx="50" cy="118" rx="34" ry="18" fill="#00BCD4"/>
+        <ellipse cx="50" cy="105" rx="22" ry="16" fill="#26C6DA"/>
+        <text x="50" y="110" font-size="14" text-anchor="middle">❄️</text>
+        <!-- Head (white husky with grey) -->
+        <ellipse cx="50" cy="60" rx="28" ry="26" fill="#E8E8F0"/>
+        <!-- Grey mask/markings -->
+        <ellipse cx="50" cy="50" rx="20" ry="13" fill="#9090B0" opacity="0.55"/>
+        <ellipse cx="38" cy="52" rx="10" ry="8" fill="#9090B0" opacity="0.4"/>
+        <ellipse cx="62" cy="52" rx="10" ry="8" fill="#9090B0" opacity="0.4"/>
+        <!-- White muzzle -->
+        <ellipse cx="50" cy="74" rx="14" ry="10" fill="#FFFFFF"/>
+        <!-- Eyes (blue husky eyes!) -->
+        <circle cx="37" cy="58" r="7.5" fill="white"/>
+        <circle cx="63" cy="58" r="7.5" fill="white"/>
+        <circle cx="38.5" cy="59" r="5" fill="#1A5AAA"/>
+        <circle cx="64.5" cy="59" r="5" fill="#1A5AAA"/>
+        <circle cx="40" cy="57.5" r="1.8" fill="white"/>
+        <circle cx="66" cy="57.5" r="1.8" fill="white"/>
+        <ellipse cx="50" cy="72" rx="5.5" ry="3.8" fill="#1A1A2A"/>
+        <path d="M43,78 Q50,85 57,78" stroke="#1A1A2A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <ellipse cx="50" cy="83" rx="5" ry="3.5" fill="#E07070"/>
+        <!-- Wolf/pointed ears (husky) -->
+        <path d="M24,44 L18,12 L38,36 Z" fill="#E8E8F0"/>
+        <path d="M27,43 L22,16 L36,38 Z" fill="#9090B0" opacity="0.6"/>
+        <path d="M76,44 L82,12 L62,36 Z" fill="#E8E8F0"/>
+        <path d="M73,43 L78,16 L64,38 Z" fill="#9090B0" opacity="0.6"/>
+        <!-- Teal snow helmet -->
+        <ellipse cx="50" cy="36" rx="26" ry="9" fill="#00BCD4"/>
+        <rect x="26" y="28" width="48" height="12" rx="5" fill="#00BCD4"/>
+        <ellipse cx="50" cy="28" rx="22" ry="6" fill="#0097A7"/>
+        <ellipse cx="50" cy="26" rx="16" ry="4" fill="#006064"/>
+        <ellipse cx="50" cy="44" rx="16" ry="5" fill="rgba(100,220,255,0.35)"/>
+      </svg>
+      <span class="char-name">Everest</span>
+    </div>
+
+  </div><!-- /chars-strip -->
+
+  <!-- ══════════ RSVP MODAL ══════════ -->
+  <div id="rsvp-modal" role="dialog" aria-modal="true">
+    <div id="modal-backdrop"></div>
+    <div id="modal-card">
+      <button id="modal-close">✕</button>
+      <svg viewBox="0 0 60 70" xmlns="http://www.w3.org/2000/svg" width="44" style="display:block;margin:0 auto 8px">
+        <path d="M30,2 Q55,2 58,16 L58,40 Q58,59 30,68 Q2,59 2,40 L2,16 Q5,2 30,2 Z" fill="#E31E24"/>
+        <ellipse cx="30" cy="42" rx="9" ry="8" fill="#0057B8"/>
+        <ellipse cx="21" cy="32" rx="5" ry="5.5" fill="#0057B8"/>
+        <ellipse cx="28.5" cy="28" rx="5" ry="5.5" fill="#0057B8"/>
+        <ellipse cx="36" cy="28" rx="5" ry="5.5" fill="#0057B8"/>
+        <ellipse cx="43" cy="32" rx="5" ry="5.5" fill="#0057B8"/>
+      </svg>
+      <h2 class="modal-title">RSVP</h2>
+      <p class="modal-sub">Confirm your attendance to Dennys' party!</p>
+
+      <form id="rsvp-form" novalidate autocomplete="off">
+        <div class="form-group">
+          <label for="surname">Parent's Last Name <span class="req">*</span></label>
+          <input type="text" id="surname" name="surname" placeholder="e.g. Papadopoulos"/>
+          <span class="field-error" id="surname-error"></span>
+        </div>
+        <div class="form-group">
+          <label for="guests">Number of Guests <span class="req">*</span></label>
+          <div class="number-wrap">
+            <button type="button" id="g-minus">−</button>
+            <input type="number" id="guests" name="guests" min="1" max="20" value="2"/>
+            <button type="button" id="g-plus">+</button>
+          </div>
+          <span class="field-error" id="guests-error"></span>
+        </div>
+        <div class="form-group">
+          <label for="message">Message <span class="opt">(optional)</span></label>
+          <textarea id="message" name="message" rows="2" placeholder="Say something to Dennys..."></textarea>
+        </div>
+        <button type="submit" id="rsvp-btn">
+          <span class="btn-text">Confirm Attendance 🐾</span>
+          <span class="btn-loading" hidden>Sending...</span>
+        </button>
+        <div id="form-api-error" class="api-error" hidden></div>
+      </form>
+      <div id="form-success" class="form-success" hidden>
+        <div style="font-size:3rem">🎉</div>
+        <h3>See you there!</h3>
+        <p>Thank you! We can't wait to celebrate with you!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Music -->
+  <button id="music-btn" aria-label="Toggle music">
+    <svg id="icon-on" viewBox="0 0 24 24" width="20" height="20"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" fill="white"/></svg>
+    <svg id="icon-off" viewBox="0 0 24 24" width="20" height="20" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" fill="white"/></svg>
+  </button>
+
+  <div id="yt-wrap" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden">
+    <div id="yt-player"></div>
+  </div>
+
+  <script>var tag=document.createElement('script');tag.src="https://www.youtube.com/iframe_api";document.head.appendChild(tag);</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
